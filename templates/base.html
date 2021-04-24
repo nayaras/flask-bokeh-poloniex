@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista</title>
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+  <div class="container">
+    
+    <div class="page-header">
+      <h1>{{ titulo }}</h1>
+      {% block content%} {% endblock %}
+    </div>
+    {% block conteudo %}{% endblock %}
+    <div>
+      {% block clandestick %}{% endblock %}
+
+    </div>
+  </div>
+
+
+</body>
+
+</html>
