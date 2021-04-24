@@ -2,18 +2,15 @@ from flask import Flask, render_template, request
 import requests
 import json
 from datetime import datetime
-from pytz import timezone
 from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.resources import INLINE
-from bokeh.models import ColumnDataSource, HoverTool, CrosshairTool
+from bokeh.models import ColumnDataSource, HoverTool, CrosshairTool, SingleIntervalTicker, LinearAxis, DatetimeTickFormatter
 import numpy as np
 from flask_mysqldb import MySQL
 from flask_apscheduler import APScheduler
-from bokeh.sampledata.stocks import MSFT
-
-
 import pandas as pd
+
 
 #ativar: venv\Scripts\activate
 #set FLASK_ENV=development
@@ -47,14 +44,14 @@ def get_data():
 
     return res, date
 
-def insert(date, resposta, close):
+def insert(date, resposta):
     last_id_insert = -1
     try:
         cur = mysql.connection.cursor()
         data_hora = datetime.strptime(date, "%a, %d %b %Y %H:%M:%S %Z")
         
-        cur.execute("INSERT INTO cotacoes(moeda_label, moeda_cod, periodicidade, data_hora, open, low, high, close) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    ('Bitcoin', 'USDT_BTC', '1', data_hora, resposta['USDT_BTC']['last'], resposta['USDT_BTC']['lowestAsk'], resposta['USDT_BTC']['highestBid'], close))
+        cur.execute("INSERT INTO cotacao(moeda_label, moeda_cod, periodicidade, data_hora, open, low, high, close) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    ('Bitcoin', 'USDT_BTC', '1', data_hora, resposta['USDT_BTC']['last'], resposta['USDT_BTC']['lowestAsk'], resposta['USDT_BTC']['highestBid'], resposta['USDT_BTC']['last']))
         mysql.connection.commit()
 
 
@@ -69,12 +66,14 @@ def insert(date, resposta, close):
     return last_id_insert
     
 def update(close):
+    print('chamou pdate')
     try:
         cur = mysql.connection.cursor()
         #pega o id do ultimo candle inserido
-        id = cur.execute("select id from smarttbot.cotacoes ORDER BY id DESC LIMIT 1")
+        cur.execute("select id from smarttbot.cotacao ORDER BY id DESC LIMIT 1")
+        id = cur.fetchone()
         print('id ',id)
-        cur.execute("update smarttbot.cotacoes set `close` = %s where id =%s",(close,id))
+        cur.execute("update smarttbot.cotacao set `close` = %s where id =%s",(close,id))
     except:
         print('[DEBUG :: DB] Erro no update do candlestick.')
 
@@ -84,7 +83,7 @@ def select(time):
     try:
         cur = mysql.connection.cursor()
         
-        cur.execute("select data_hora, open, low, high, close from cotacoes where periodicidade= %s", (time))
+        cur.execute("select data_hora, open, low, high, close from cotacao where periodicidade= %s", (time))
         rows = cur.fetchall()
         
         cur.close()
@@ -107,9 +106,10 @@ def create_candlestick():
     print('cols1', df.columns)
     seqs = np.arange(df.shape[0])
     df["seq"] = pd.Series(seqs)
+    print(type(df["open"][0]))
 
     df["data_hora"] = pd.to_datetime(df["data_hora"])
-    df['data_hora'] = df['data_hora'].apply(lambda x: x.strftime('%m/%d'))
+    df['data_hora'] = df['data_hora'].apply(lambda x: x.strftime('%d/%m/%y %H:%M:%S'))
     #df['changepercent']=df['changepercent'].apply(lambda x: str(x)+"%")
 
     df['mid'] = df.apply(lambda x: (x['open']+x['close'])/2, axis=1)
@@ -127,17 +127,22 @@ def create_candlestick():
     # the values for the tooltip come from ColumnDataSource
     hover = HoverTool(
         tooltips=[
-            ("data_hora", "@data_hora"),
-            ("open", "@open"),
-            ("close", "@close"),
-            #("percent", "@changepercent"),
+            ("data/hora", "@data_hora"),
+            ("open", "@open{1.1111}"),
+            ("close", "@close{1.1111}"),
         ]
     )
 
     TOOLS = [CrosshairTool(), hover]
+    #para setar range do eixo y
+    max_value = df["high"].max() + 300
+    min_value = df["low"].min() - 300
     p = figure(plot_width=700, plot_height=400, tools=TOOLS,
-            title=df["data_hora"][0]+" "+df["data_hora"][0])
-    p.xaxis.major_label_orientation = 3.1455666/4
+            title="Candlestick do dia "+df["data_hora"][0], y_range=(min_value, max_value))
+    #p.xaxis.major_label_orientation = 50000/4
+    p.xaxis.formatter = DatetimeTickFormatter(minutes = ['%M'])
+
+
     p.grid.grid_line_alpha = 0.3
 
     # this is the up tail
@@ -151,7 +156,9 @@ def create_candlestick():
     # this is the candle body for the green dates
     p.rect(x='seq', y='mid', width=w, height='height',
         fill_color="green", line_color="green", source=sourceDec)
+    
     return p
+
 
 @app.route("/get-selected")
 def get_selected():
@@ -160,7 +167,7 @@ def get_selected():
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
-    print('chamou home ',str(datetime.now))
+    print('chamou home ',str(datetime.now()))
     res = get_data()
     
     if res[0].status_code == 200:
@@ -174,18 +181,13 @@ def home():
         
         
         
-        insert(res[1], resposta, 0)
+        insert(res[1], resposta)
         
         # scheduler = APScheduler()
         # scheduler.add_job(func=get_data, args=[], trigger='interval', id='job', seconds=30)
         # scheduler.start()
 
         
-        
-       
-
-        #output_file("candlestick.html", title="candlestick.py example")
-
         # grab the static resources
         js_resources = INLINE.render_js()
         css_resources = INLINE.render_css()
