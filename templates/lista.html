@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 <!--criamos um bloco de conteúdo a ser interpretado pelo python-->
-{% block conteudo %}
+{% block tabela %}
 <div style="overflow-x:auto;">
 
     <table class="styled-table">
@@ -18,12 +18,12 @@
             </tr>
         </thead>
         <tbody>
-            {% if cotacao != 'ERROR': %}
+            {% if cotacao|length != 0: %}
             {% for moeda in moedas: %} 
             <tr>
                 <td>Bitcoin</td>
                 <td>{{ moeda }}</td>
-                <td>{{ "periodo" }}</td>
+                <td>{{ periodo }}</td>
                 <td>{{ data_requisicao }}</td>
                 <td>{{ cotacao[moeda]['last'] }}</td>
                 <td>{{ cotacao[moeda]['lowestAsk'] }}</td>

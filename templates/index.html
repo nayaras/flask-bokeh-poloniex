@@ -2,54 +2,32 @@
 
 {%block content%}
 
-<head>
-    <title>Homepage</title>
-</head>
-
-<body>
-    <h1>homepage</h1>
-    <div>
+    <div class="candlestick">
         <div class="dropdown">
             <h3 class="h3_">Tempo de processamento: </h3>
             <select name="time" id="time" class="dropbtn">
-            <div class="dropdown-content">
-                <option value="5" selected="selected">5 minutos</option>
-                <option value="10">10 minutos</option>
-                <option value="15">15 minutos</option>
-            </div>
-        </select>
+                <div class="dropdown-content">
+                    <option value="1" selected="selected">1 minuto</option>
+                    <option value="5">5 minutos</option>
+                    <option value="10">10 minutos</option>
+                </div>
+            </select>
         </div>
+        <div>
+            {{ js_resources|indent(4)|safe }}
+            {{ css_resources|indent(4)|safe }}
+            {{ plot_script|indent(4)|safe }}
 
-        {{ js_resources|indent(4)|safe }}
-        {{ css_resources|indent(4)|safe }}
-        {{ plot_script|indent(4)|safe }}
+            {{ plot_div|indent(4)|safe }}
 
-        {{ plot_div|indent(4)|safe }}
-
-        
-
+        </div>
     </div>
     <div class="inline">
         <h3 class="h3_2">Última requisição: {{ data_requisicao }} </h3>
-        
+
         <a href="{{ url_for('home') }}" class="button_refresh">REFRESH</a>
         {%include "lista.html"%}
     </div>
 
-
     {%endblock%}
-    <script>
-        $('#time').change(function () {
-        $.ajax({
-            url: url, // this is the variable we declared in the template file
-            data: $('#time option:selected').val(),
-            type: 'POST',
-            contentType: false
-        }).done(function (res) {
-            // assuming res is the options for the second select filed 
-            // append them to the second select
-        });
-    });
-    </script>
 
-</body>

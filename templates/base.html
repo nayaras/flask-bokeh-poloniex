@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista</title>
-  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Candlestick</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
 
-</head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 
-<body>
-  <div class="container">
-    
-    <div class="page-header">
-      <h1>{{ titulo }}</h1>
+
+  </head>
+
+  <body>
+    <div>
       {% block content%} {% endblock %}
     </div>
-    {% block conteudo %}{% endblock %}
-    <div>
-      {% block clandestick %}{% endblock %}
-
-    </div>
-  </div>
 
 
-</body>
+    {% block tabela %}{% endblock %}
+
+
+  </body>
 
 </html>
