@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    
+      
+  redis:
+    image: redis
+    
+  db:
+    image: mysql:5.7
+    
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '32000:3306'
+    
+      # Where our data will be persisted
+    command: --init-file /data/application/init.sql
+    volumes:
+        - ./init.sql:/data/application/init.sql
+    environment:
+      MYSQL_DATABASE: 'smarttbot'
+      MYSQL_USER: 'nayara'
+      MYSQL_PASSWORD: '123456'
+      MYSQL_ROOT_PASSWORD: '123456'
