@@ -3,14 +3,14 @@ import mysql.connector
 from mysql.connector import errorcode
 
 config = {
-  'user': 'nayara',
-  'password': '123456',
-  #'host': 'host.docker.internal',
-  #'port':'32000',
-  'host': 'localhost',
-  'port':'3306',
-  'database': 'smarttbot',
-  'raise_on_warnings': True
+    'user': 'nayara',
+    'password': '123456',
+    'host': 'host.docker.internal',
+    'port':'32000',
+    #'host': 'localhost',
+    #'port':'3306',
+    'database': 'smarttbot',
+    'raise_on_warnings': True
 }
 
 
@@ -41,7 +41,7 @@ def insert(date, resposta, tempo):
     except mysql.connector.Error as err:
         print("[DEBUG :: DB] Erro ao salvar ultima transacao no BD.", err)
 
-    #return last_id_insert
+    
 
 
 def update(close):

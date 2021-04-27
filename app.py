@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import requests
 import json
 from datetime import datetime
@@ -15,9 +15,7 @@ from bokeh.models import (
 )
 import numpy as np
 
-from flask_apscheduler import APScheduler
 import pandas as pd
-import redis
 
 from db import select, insert, update
 
@@ -27,7 +25,6 @@ from db import select, insert, update
 app = Flask(__name__, static_url_path="")
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-
 
 
 ##funcao para api rest (requisição get na url do poloniex)
@@ -95,8 +92,6 @@ def create_candlestick(time):
         max_value = df["high"].max() + 300
         min_value = df["low"].min() - 300
 
-        
-
         p = figure(
             x_axis_label="Horário (UTC)",
             y_axis_label="Valor (US$)",
@@ -107,16 +102,11 @@ def create_candlestick(time):
             y_range=(min_value, max_value),
         )
 
-        # map dataframe indices to date strings and use as label overrides
+        #formata eixo x para aparecer horario da requisicao dos valores
         p.xaxis.major_label_overrides = {
             i: date.strftime('%H:%M') for i, date in enumerate(pd.to_datetime(df["data_hora"]))
         }
-        #formata eixo x para unidade de medida minutos
-        #p.xaxis.formatter = DatetimeTickFormatter(days = ['%m/%d', '%a%d'])
-        # col_data = df['data_hora'].tolist()
-        # print(col_data)
-        # p.xaxis.ticker = col_data[:]
-
+        
         p.grid.grid_line_alpha = 0.3
 
         # this is the up tail
@@ -148,6 +138,7 @@ def create_candlestick(time):
         )
 
         return p
+
     except:
         print('[DEBUG ::]  Erro ao gerar candlestick. Verificar requisição ao bd')
     
@@ -161,7 +152,6 @@ def home():
         #se houver troca do tempo no dropdown, regarrega a page
         if "selected_index" in request.args:
             tempo = request.args.get("selected_index")
-            print('recarregou aqui', tempo)
 
     #request poloniex assim que a página é chamada               
     res = get_data()
@@ -203,5 +193,7 @@ def home():
             js_resources=js_resources,
             css_resources=css_resources,
         )
+        
     else:
-        return render_template("index.html", cotacao="ERROR")
+        return render_template("index.html")
+        
