@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+<!--criamos um bloco de conteúdo a ser interpretado pelo python-->
+{% block tabela %}
+<div style="overflow-x:auto;">
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Moeda</th>
+                <th>Código moeda</th>
+                <th> Data</th>
+                <th>Open</th>
+                <th>Low</th>
+                <th>High</th>
+                <th>Close</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% if cotacao|length != 0: %}
+            {% for moeda in moedas: %}
+            <tr>
+                <td>Bitcoin</td>
+                <td>{{ moeda }}</td>
+                <td>{{ data_requisicao }}</td>
+                <td>{{ cotacao[moeda]['last'] }}</td>
+                <td>{{ cotacao[moeda]['lowestAsk'] }}</td>
+                <td>{{ cotacao[moeda]['highestBid'] }}</td>
+                <td>{{ cotacao[moeda]['last'] }}</td>
+            </tr>
+            {% endfor %}
+            {% else: %}
+            <p> Os dados não puderam ser processados, recarregue a página.</p>
+            {% endif %}
+
+
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+<!--encerramos o bloco de código a ser interpretado pelo python-->
+
