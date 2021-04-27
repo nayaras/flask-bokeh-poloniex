@@ -1,7 +1,6 @@
 {%extends "base.html"%}
 
 {%block content%}
-
     <div class="candlestick" style="justify-content: center; display: grid;">
         <div class="dropdown">
             <h3 class="h3_">Tempo de processamento: </h3>
@@ -26,8 +25,14 @@
         <h3 class="h3_2">Última requisição: {{ data_requisicao }} </h3>
 
         <a href="{{ url_for('home') }}" class="button_refresh">REFRESH</a>
-        {%include "lista.html"%}
+        {%include "tabela.html"%}
     </div>
-
+    <script>
+        function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);",timeoutPeriod);
+        } 
+        console.log('time ', localStorage.getItem("time"))   
+        window.onload = timedRefresh(localStorage.getItem("time")*60*1000); 
+    </script>
     {%endblock%}
 
