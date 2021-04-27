@@ -29,7 +29,8 @@
 ## Descrição
 
 Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valores do bitcoin extraídos da API Poloniex.
-Objetivo: Processar cotações de criptomoedas (escolhi bitcoin USDT-BTC), agregá-las em candlesticks (com os dados de abertura, máxima, mínima e fechamento) e salvar em banco de dados dado um período escolhido.
+
+**Objetivo:** Processar cotações de criptomoedas (escolhi bitcoin USDT-BTC), agregá-las em candlesticks (com os dados de abertura, máxima, mínima e fechamento) e salvar em banco de dados dado um período escolhido.
 
 ### Arquivos
 
