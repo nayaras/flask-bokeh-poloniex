@@ -11,8 +11,4 @@ CREATE TABLE IF NOT EXISTS cotacao(
 	high DOUBLE,
 	close DOUBLE
 );
-
-/*INSERT INTO cotacao (moeda_label, moeda_cod, periodicidade, data_hora, open, low, high, close) VALUES ('Bitcoin', 'USDT_BTC', '1', now(), '54633.59', '54687.82353358', '54659.18107648', '54633.59493125');
-INSERT INTO cotacao (moeda_label, moeda_cod, periodicidade, data_hora, open, low, high, close) VALUES ('Bitcoin', 'USDT_BTC', '5', now(), '53770.50', '53792.77690559', '53770.50114211', '53770.50114212');
-INSERT INTO cotacao (moeda_label, moeda_cod, periodicidade, data_hora, open, low, high, close) VALUES ('Bitcoin', 'USDT_BTC', '10', now(), '54841.00', '54852.00', '54848.97413428', '54848.97413428');
-*/
+INSERT INTO cotacao (moeda_label, moeda_cod, periodicidade, data_hora, open, low, high, close) VALUES ('Bitcoin', 'USDT_BTC', '1', now(), '54963.16', '54964.26503449', '54964.26503448', '54963.16501884');

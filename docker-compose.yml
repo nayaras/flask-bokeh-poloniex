@@ -1,10 +1,5 @@
 version: "3.9"
 services:
-  web:
-    build: .
-    ports:
-      - "5000:5000"
-    
   db:
     image: mysql:5.7
     
@@ -21,5 +16,22 @@ services:
       MYSQL_USER: 'nayara'
       MYSQL_PASSWORD: '123456'
       MYSQL_ROOT_PASSWORD: '123456'
+    healthcheck:
+      test: "/usr/bin/mysql --user=nayara --password=123456 --execute \"SHOW DATABASES;\""
+      timeout: 10s
+      interval: 10s
+      retries: 5
     networks: 
       - default
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      WAIT_HOSTS: mysql:32000
+    depends_on:
+      db:
+        condition: service_healthy
+          
+    
+  
