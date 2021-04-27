@@ -5,7 +5,11 @@
 <details open="open">
     <summary>Sumário </summary>
     <ol>
-        <li><a href="#descrição">Descrição</a></li>
+        <li><a href="#descrição">Descrição</a>
+            <ul>
+                <li><a href="#arquivos">Arquivos principais</a></li>
+            </ul>
+        </li>
         <li><a href="#detalhes-técnicos">Detalhes Técnicos</a></li>
         <li><a href="#etapas">Etapas</a></li>
         <li><a href="#instalação">Instalação</a>
@@ -25,6 +29,15 @@
 
 Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valores do bitcoin extraídos da API Poloniex 
 
+### Arquivos
+
+1. [app.py](https://github.com/nayaras/flask-bokeh-poloniex/blob/main/app.py): arquivo principal com criação do candlestick, redenrização do index.html e requisição da api poloniex
+2. [db.py](https://github.com/nayaras/flask-bokeh-poloniex/blob/main/db.py): arquivo que realiza conexão com banco de dados e cria funções de crud (exceto delete)
+3. [scatic folder](https://github.com/nayaras/flask-bokeh-poloniex/tree/main/static): possui um aquivo css com estilização básica para index.html e possui um arquivo de jquery com script que detecta seleção de tempo no dropdown
+4. [templates folder](https://github.com/nayaras/flask-bokeh-poloniex/tree/main/templates): arquivos html, base (imports, resposividade etc), index (tela inicial, carrega candlestick e tabela), tabela (cria tabela de cotações)
+5. [requirements.txt](https://github.com/nayaras/flask-bokeh-poloniex/blob/main/requirements.txt): bibliotecas python utilizadas (to reproduce: pip freeze > requirements.txt)
+6. [init.sql](https://github.com/nayaras/flask-bokeh-poloniex/blob/main/init.sql): script de criação do bd/tabela principal
+7. [docker-compose.yml](https://github.com/nayaras/flask-bokeh-poloniex/blob/main/docker-compose.yml) e [Dockerfile](https://github.com/nayaras/flask-bokeh-poloniex/blob/main/Dockerfile): arquivos de configuração do docker (imagens do python3.7-slim e mysql) 
 
 ## Detalhes técnicos
 
@@ -47,6 +60,7 @@ Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valo
 4. Refatoração do app.py com db.py (métodos de inserção, update e select)
 5. Criação do ambiente no docker
 6. Testes unitários
+
 
 
 ## Instalação
