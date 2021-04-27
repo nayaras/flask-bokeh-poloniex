@@ -5,14 +5,14 @@
 <details open="open">
     <summary>Sumário </summary>
     <ol>
-        <li> <a href="#description">Descrição</a></li>
-        <li><a href="#details">Detalhes Técnicos</a></li>
-        <li> <a href="#phases">Etapas</a></li>
-        <li> <a href="#installation">Instalação</a>
+        <li> <a href="#descrição">Descrição</a></li>
+        <li><a href="#detalhes-técnicos">Detalhes Técnicos</a></li>
+        <li> <a href="#etapas">Etapas</a></li>
+        <li> <a href="#instalação">Instalação</a>
             <ul>
-                <li><a href="#prerequisites">Pré-requisitos</a></li>
-                <li><a href="#usage">Para reproduzir (com docker)</a></li>
-                <li><a href="#local-test">Testar localmente (sem docker)</a></li>
+                <li><a href="#pré-requisitos">Pré-requisitos</a></li>
+                <li><a href="#para-reproduzir">Para reproduzir</a></li>
+                <li><a href="#testar-localmente">Testar localmente</a></li>
             </ul>
         </li>
         </li>
