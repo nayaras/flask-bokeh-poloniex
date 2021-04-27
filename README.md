@@ -20,6 +20,7 @@
                 <li><a href="#rodar-localmente">Testar localmente</a></li>
             </ul>
         </li>
+         <li><a href="#resultados">Resultados</a>
         <li><a href="#observações-e-dificuldades">Observações</a>
         <li><a href="#referências">Referências</a>
     </ol>
@@ -27,7 +28,8 @@
 
 ## Descrição
 
-Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valores do bitcoin extraídos da API Poloniex 
+Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valores do bitcoin extraídos da API Poloniex.
+Objetivo: Processar cotações de criptomoedas (escolhi bitcoin USDT-BTC), agregá-las em candlesticks (com os dados de abertura, máxima, mínima e fechamento) e salvar em banco de dados dado um período escolhido.
 
 ### Arquivos
 
@@ -121,6 +123,15 @@ Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valo
 ```sh
    localhost:5000
 ```
+## Resultados
+Candlesticks gerados das 19:00 às 19:16 do dia 27/04/2021 (reparem que o horário mostrado no gráfico se refere a UTC - Tempo Universal Coordenado, horário da requisição a API)
+
+![Screenshot](prints/candlestick.png)
+
+
+Tabela em tempo real (não é salva no bd, é carregada assim que a requisição a API da poloniex é feita)
+
+![Screenshot](prints/tabela.png)
  
  ## Observações e Dificuldades
  1. Apesar de ter familiaridade com python no desenvolvimento de scripts/consumo-desenvolvimento de apis (inclusive relacionadas a Google Cloud Platform), não tenho muita familiaridade com o Flask
@@ -129,7 +140,8 @@ Aplicação em Flask usando biblioteca bokeh para construir candlesticks de valo
  3.1. Como solução futura: trocar framework (talvez django resolva) ou estudar o bokeh server
  4. Testei o plotly para gerar a visualização do candlestick, mas para aplicação web achei o bokeh mais indicado
  5. A tabela presente só possui front (css e html puro) para mostrar a requisição atual, sem armazenamento de dados
- 6. Testei local com uma lib de integração do flask com mysql e quando fui subir pro docker, nenhuma versão do python aceitava a instalação, o que me fez ter que usar o conector do mysql pra python (e perder um tempinho na readaptação)
+ 6. [Dificuldade] O docker estava iniciando o web app antes do bd, o que estava ocasionando erros (resolvido com a adição do healthcheck no docker-compose.yml)
+ 7. Testei local com uma lib de integração do flask com mysql e quando fui subir pro docker, nenhuma versão do python aceitava a instalação, o que me fez ter que usar o conector do mysql pra python (e perder um tempinho na readaptação)
  
  ## Referências
  1. Docker: https://docs.docker.com/compose/gettingstarted/
